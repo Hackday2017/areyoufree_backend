@@ -14,7 +14,6 @@ def givetime():
 
         conn = redis.StrictRedis(host='localhost',decode_responses=True, port=6379, db=5)
         
-        
         t = [username, groupname, start_date]
         identify = conn.get(json.dumps(t))
         if identify == None:

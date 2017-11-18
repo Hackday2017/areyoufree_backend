@@ -8,10 +8,9 @@ import json
 def gettime():
     if request.method == 'POST':
         groupname = request.get_json().get("groupname")
-
-        conn = redis.StrictRedis(host='localhost',decode_responses=True, port=6379, db=5)
-        keys = list(conn.keys())
         
+        conn = redis.StrictRedis(host='localhost',decode_responses=True, port=6379, db=5)
+        keys = conn.keys()
 
         #不存在返回404
         if keys == None:
@@ -19,14 +18,15 @@ def gettime():
 
         dic = {}
         for k in keys:
-            if json.loads(k[1]) == groupname:
-                dic[json.loads(k[0])] = json.loads(conn.get(k))
+            ak = json.loads(k.decode("utf-8"))
+            if ak[1] == groupname:
+                dic[ak[0]] = json.loads(conn.get(k))
 
         ret = {}
         baseint = 0
-        date = list(keys[0][2])
-        print(date)
-        input(">")
+        daykey = json.loads(keys[0])
+        date = daykey[2]
+
         for i in range(7):
             date = legaldate(str(int(date)+i))
             datedic = {}
