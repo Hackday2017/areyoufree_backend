@@ -2,14 +2,14 @@ from . import api
 from flask import request, jsonify
 
 import redis
-import json
+import pickle
 
 @api.route('/gettime/', methods = ['POST'])
 def gettime():
     if request.method == 'POST':
         groupname = request.get_json().get("groupname")
         
-        conn = redis.StrictRedis(host='localhost',decode_responses=True, port=6379, db=5)
+        conn = redis.StrictRedis(host='localhost',decode_responses=True, port=6379, db=6)
         keys = conn.keys()
 
         #不存在返回404
@@ -18,13 +18,13 @@ def gettime():
 
         dic = {}
         for k in keys:
-            ak = json.loads(k.decode("utf-8"))
+            ak = pickle.loads(k)
             if ak[1] == groupname:
-                dic[ak[0]] = json.loads(conn.get(k))
+                dic[ak[0]] = pickle.loads(conn.get(k))
 
         ret = {}
         baseint = 0
-        daykey = json.loads(keys[0])
+        daykey = pickle.loads(keys[0])
         date = daykey[2]
 
         for i in range(7):
@@ -55,11 +55,8 @@ def gettime():
         
 def legaldate(date):
     year = date[0:4]
-    print(year)
     month = date[4:6]
-    print(month)
     day = date[6:8]
-    print(day)
     year = int(year)
     month = int(month)
     day = int(day)
@@ -96,4 +93,4 @@ def legaldate(date):
     else:
         day = str(day)
 
-    return year+month+day
+    return str(year)+ str(month) + str(day)
