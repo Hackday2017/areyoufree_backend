@@ -20,7 +20,7 @@ def gettime():
         for k in keys:
             ak = pickle.loads(k)
             if ak[1] == groupname:
-                dic[ak[0]] = pickle.loads(conn.get(k))
+                dic[ak[0]] = eval(pickle.loads(conn.get(k)))
 
         ret = {}
         baseint = 0
@@ -28,26 +28,27 @@ def gettime():
         date = daykey[2]
 
         for i in range(7):
-            date = legaldate(str(int(date)+i))
-            datedic = {}
-            ret[date] = datedic
+            datetmp = str(int(date) + i)
+            datetmp = legaldate(datetmp)
+            ret[datetmp] = {}
             hour = 0
 
             for j in range(48):
                 hour = j
                 hourdic = {}
-                ret[date][hour] = hourdic
+                ret[datetmp][hour] = hourdic
                 
-                ret[date][hour]["member"] = []
-                ret[date][hour]["member_count"] = 0
+                ret[datetmp][hour]["member"] = []
+                ret[datetmp][hour]["member_count"] = 0
                 
-                dickeys = dic.keys()
+                dickeys = list(dic.keys())
 
                 for k in range(len(dickeys)):
                     name = dickeys[k]
+                    print("node now:" , baseint+hour, " value", dic[name][baseint+hour], " type:", type(dic[name][baseint+hour]))
                     if dic[name][baseint + hour]:
-                        ret[date][hour]["member"].append(name)
-                        ret[date][hour]["member_count"] += 1
+                        ret[datetmp][hour]["member"].append(name)
+                        ret[datetmp][hour]["member_count"] += 1
 
             baseint += 48
         
@@ -61,16 +62,21 @@ def legaldate(date):
     month = int(month)
     day = int(day)
 
+
     if month == 2:
         if (year%100 == 0 and year%400 == 0) or (year%100!=0 and year % 4 == 0):
-            if day >= 29:
+            if day > 29:
                 day -= 29
                 month += 1
-    
+        else:
+            if day > 28:
+                day -= 28
+                month += 1
+
     elif month == 12:
         if day > 31:
             day -= 31
-            month -= 12
+            month -= 11
             year += 1
 
     elif month in [1, 3, 5, 7, 8, 10]:
@@ -82,15 +88,15 @@ def legaldate(date):
         if day > 30:
             day -= 30
             month += 1
-
+    
     if month < 10:
         month = "0" + str(month)
     else:
         month = str(month)
 
     if day < 10:
-        day = "0" + str(month)
+        day = "0" + str(day)
     else:
         day = str(day)
-
+    
     return str(year)+ str(month) + str(day)
