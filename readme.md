@@ -1,4 +1,4 @@
-#API 文档
+# API 文档
 
 # Hackday API
 redis结构:
@@ -28,9 +28,11 @@ redis结构:
 ## 获取团队时间
 redis结构:
 `((date,hour), member, member_number)`
+
 |URL|Method|
 |---|---|
 |/api/gettime/|POST|
+
 **POST DATA**
 ```
 {
