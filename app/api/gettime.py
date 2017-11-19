@@ -44,7 +44,7 @@ def gettime():
 
                 for k in range(len(dickeys)):
                     name = dickeys[k]
-                    print("node now:" , baseint+hour, " value", dic[name][baseint+hour], " type:", type(dic[name][baseint+hour]))
+#                    print("node now:" , baseint+hour, " value", dic[name][baseint+hour], " type:", type(dic[name][baseint+hour]))
                     if dic[name][baseint + hour]:
                         ret[datetmp][hour]["member"].append(name)
                         ret[datetmp][hour]["member_count"] += 1
