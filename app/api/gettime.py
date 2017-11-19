@@ -9,7 +9,7 @@ def gettime():
     if request.method == 'POST':
         groupname = request.get_json().get("groupname")
         
-        conn = redis.StrictRedis(host='localhost', decode_responses=True, port=6379, db=6)
+        conn = redis.StrictRedis(host='localhost', decode_responses=True, port=6379, db=7)
         keys = conn.keys()
         #不存在返回404
         if keys == None:
@@ -17,13 +17,13 @@ def gettime():
 
         dic = {}
         for k in keys:
-            ak = pickle.loads(k)
+            ak = eval(k)
             if ak[1] == groupname:
-                dic[ak[0]] = eval(pickle.loads(conn.get(str(k))))
+                dic[ak[0]] = eval(conn.get(k))
 
         ret = {}
         baseint = 0
-        daykey = pickle.loads(keys[0])
+        daykey = eval(keys[0])
         date = daykey[2]
 
         for i in range(7):
