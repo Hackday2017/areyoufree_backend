@@ -1,0 +1,14 @@
+areyoufree:
+    build: .
+    container_name: guisheng
+    command: gunicorn --name areufree -b 0.0.0.0:1500 -w run:app
+    ports:
+        - "1500:1500"
+    links:
+        -redis
+
+redis:
+    image: redis
+    command: redis-server --port 6379
+    ports:
+        - "6379:6379"
