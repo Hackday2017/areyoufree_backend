@@ -1,14 +1,14 @@
 areyoufree:
     build: .
-    container_name: guisheng
-    command: gunicorn --name areufree -b 0.0.0.0:1500 -w run:app
+    container_name: areyoufree
+    command: gunicorn --name areufree -b 0.0.0.0:1500 -w 2 wsgi:app
     ports:
         - "1500:1500"
     links:
-        -redis
+        - redis
 
 redis:
     image: redis
-    command: redis-server --port 6379
+    command: redis-server --port 6380
     ports:
-        - "6379:6379"
+        - "6380:6380"

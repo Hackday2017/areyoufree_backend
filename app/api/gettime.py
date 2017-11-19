@@ -9,9 +9,8 @@ def gettime():
     if request.method == 'POST':
         groupname = request.get_json().get("groupname")
         
-        conn = redis.StrictRedis(host='localhost',decode_responses=True, port=6379, db=6)
+        conn = redis.StrictRedis(host='localhost', decode_responses=True, port=6379, db=6)
         keys = conn.keys()
-
         #不存在返回404
         if keys == None:
             return jsonify({}),404
@@ -20,7 +19,7 @@ def gettime():
         for k in keys:
             ak = pickle.loads(k)
             if ak[1] == groupname:
-                dic[ak[0]] = eval(pickle.loads(conn.get(k)))
+                dic[ak[0]] = eval(pickle.loads(conn.get(str(k))))
 
         ret = {}
         baseint = 0

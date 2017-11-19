@@ -1,4 +1,4 @@
-FROM python3.6
+FROM python:3.6.2
 
 ENV DEPLOY_PATH /areyoufree_backend
 

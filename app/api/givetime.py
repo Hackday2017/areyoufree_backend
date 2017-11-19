@@ -15,9 +15,9 @@ def givetime():
         conn = redis.StrictRedis(host='localhost',decode_responses=True, port=6379, db=6)
         
         t = [username, groupname, start_date]
-        identify = conn.get(pickle.dumps(t))
+        identify = conn.get(str(pickle.dumps(t)))
         if identify == None:
-            conn.set(pickle.dumps(t), pickle.dumps(hour))
+            conn.set(str(pickle.dumps(t)), str(pickle.dumps(hour)))
             return jsonify({}),200
         else:
             return jsonify({}),403
